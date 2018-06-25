@@ -16,5 +16,8 @@
     "url": "https://github.com/2crazyflowers/MyBlog/issues"
   },
   "homepage": "https://github.com/2crazyflowers/MyBlog#readme",
-  "dependencies": {}
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3"
+  }
 }
