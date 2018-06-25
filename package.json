@@ -1,0 +1,23 @@
+{
+  "name": "myblog",
+  "version": "1.0.0",
+  "description": "simple blog application",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2crazyflowers/MyBlog.git"
+  },
+  "author": "Sara Bracewell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2crazyflowers/MyBlog/issues"
+  },
+  "homepage": "https://github.com/2crazyflowers/MyBlog#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3"
+  }
+}
