@@ -32,7 +32,9 @@ var express         = require("express"),
 
 //App Configuration
 mongoose.Promise = Promise;
-
+// this connection tells what port to use for data base and
+// what database to use, if it does not exist, create a MyBlogApp database
+// if connection made, console log, else catch the specific error
 mongoose.connect("mongodb://localhost:27017/MyBlogApp")
     .then(() => {
         console.log('The database connected')
@@ -41,7 +43,6 @@ mongoose.connect("mongodb://localhost:27017/MyBlogApp")
         console.log('Something went awry', err);
     });
 
-//if the database is not there it will create it
 // View engine which will handle the front end side, which is ejs
 app.set('view engine', 'ejs'); 
 // Use express.static to serve the public folder as a static directory
@@ -79,19 +80,23 @@ app.use(require("express-session")({
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
+// below code not working:
 // passport.serializeUser(User.serializeUser());
 // passport.deserializeUser(User.deserializeUser());
-//from documentation
+
+// below is from documentation
+//this resolved issue with user not going to database
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
-
+//this resolved issue with user not going to database
 passport.deserializeUser(function(id, done) {
     User.findById(id, function (err, user) {
         done(err, user);
     });
 });
 
+//from documentation - did not resolve errors
 // passport.use(new LocalStrategy(
 //     function(username, password, done) {
 //       User.findOne({ username: username }, function (err, user) {
@@ -125,6 +130,11 @@ app.get("/signin", function (req, res) {
     res.render('signIn');
 });
 
+app.post("/signin", passport.authenticate("local",
+    {
+    successRedirect: "/",
+    failureRedirect: "/signin"
+    }), function(req, res){ });
 
 //route for signup page
 app.get("/signup", function (req, res) {
@@ -136,7 +146,8 @@ app.post("/signup", function (req, res) {
     console.log('Current username: ' + req.body.username);
     console.log('Current password: ' + req.body.password);
 
-    // Create a new user using req.body
+    // Create a new user using req.body to test if saving user to database working
+    // without using passport etc. just simple connection
     // User.create(req.body)
     //     .then(function(dbUser) {
     //     // If saved successfully, send the the new User document to the client
@@ -147,18 +158,20 @@ app.post("/signup", function (req, res) {
     //     res.json(err);
     //     });
 
-    var newUser = new User({
-        username: req.body.username,
-        password: req.body.password
-    });
-    console.log(newUser);
+    // var newUser = new User({
+    //     username: req.body.username,
+    //     password: req.body.password
+    // });
+    // console.log(newUser);
 
+    var newUser = new User({username: req.body.username});
     User.register(newUser, req.body.password, function(err, newCreatedUser){
         if(err) {
             console.log('There is an error signing up: ' + err);
             res.redirect('/signup');
         }
         passport.authenticate('local')(req, res, function(){
+            //console.log(req.body);
             res.redirect('/');
         });
     });
