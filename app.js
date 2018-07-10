@@ -4,6 +4,7 @@ var express         = require("express"),
     LocalStrategy   = require("passport-local"),
     expressSession  = require("express-session"),
     User            = require("./models/userModel"),
+    Blog            = require("./models/blogModel"),
     bodyParser      = require("body-parser"),
     PORT            = 3000,
     app             = express();
@@ -195,6 +196,30 @@ app.post("/signup", function (req, res) {
 //route for add new blog page
 app.get("/addnewblog", function (req, res) {
     res.render('addNewBlog');
+});
+
+app.post("/addnewblog", function (req, res){
+    // console.log(req.body.data);
+    var title = req.body.data.blogTitle;
+    var subTitle = req.body.data.blogSubTitle;
+    var comImage = req.body.data.blogComImage;
+    var blog = req.body.data.blogText;
+
+    var newBlog = {
+        title: title, 
+        subTitle: subTitle, 
+        comImage: comImage,
+        blog: blog
+    }
+
+    Blog.create(newBlog)
+    .then(function(addedNewBlog){
+        console.log("New blog added: " + addedNewBlog);
+        res.status(201).json(addedNewBlog);
+    })
+    .catch(function(err) {
+        console.log("there is an error sending new blog to database: " + err)
+    })
 });
 
 

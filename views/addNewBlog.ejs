@@ -1,29 +1,59 @@
 <% include ./partials/header %>
 
+<script>
+    $(document).ready(function(){
+        $("#submit").on("click", function(event) {
+            // alert('this button was clicked');
+            
+            var blogTitle = $("#bTitle").val();
+            var blogSubTitle = $("#bSubTitle").val();
+            var blogComImage = $("#bImage").val();
+            var blogText = CKEDITOR.instances.bBlog.getData();
+            
+            console.log(blogTitle + " " + blogSubTitle + " " + " " + blogComImage + " " + blogText);
+
+            var data = {
+                blogTitle: blogTitle,
+                blogSubTitle: blogSubTitle,
+                blogComImage: blogComImage,
+                blogText: blogText
+            }
+
+            $.post("addnewblog", {data: data})
+            .then(function(addedNewBlog){
+                console.log("Post from addNewBlog.ejs: " + addedNewBlog);
+            }) 
+            .catch(function(err) {
+                res.json("there is an error posting the new blog" + err);
+            });
+        });
+    });
+</script>
+
+
 <div class="container" style="margin-top: 100px;">
 
     <form>
         <h1 style="text-align: center;">Add New Blog</h1>
         <div class="form-group">
             <label for="bTitle">Blog Title</label>
-            <input type="email" class="form-control" id="bTitle" aria-describedby="emailHelp" placeholder="Enter Title" name="title">
+            <input class="form-control" id="bTitle" placeholder="Enter Title" name="title">
         </div>
         <div class="form-group">
             <label for="bSubTitle">Blog Sub Title</label>
-            <input type="email" class="form-control" id="bSubTitle" aria-describedby="emailHelp" placeholder="Enter Subtitle" name="subTitle">
+            <input class="form-control" id="bSubTitle" placeholder="Enter Subtitle" name="subTitle">
         </div>
         <div class="form-group">
             <label for="bImage">Commercial Image</label>
-            <input type="email" class="form-control" id="bImage" aria-describedby="emailHelp" placeholder="Copy Image URL" name="comImage">
+            <input class="form-control" id="bImage" placeholder="Copy Image URL" name="comImage">
         </div>
         <div class="form-group">
             <label for="bBlog">Blog Text</label>
-            <textarea rows="3" type="email" class="form-control" id="bBlog" aria-describedby="emailHelp" placeholder="Enter Blog Text" name="blog"></textarea>
-
-            
+            <textarea rows="3" class="form-control" id="bBlog" placeholder="Enter Blog Text" name="blog"></textarea>   
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        
     </form>
+    <button type="submit" class="btn btn-primary" id="submit">Submit</button>
 </div>
 
 <script src="https://cdn.ckeditor.com/4.10.0/standard/ckeditor.js"></script>

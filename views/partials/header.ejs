@@ -17,6 +17,8 @@
     <!-- Custom styles for this template -->
     <link href="css/main.css" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
   </head>
 
   <body>
@@ -44,12 +46,12 @@
 
             <%if (!currentUser) { %>
               <li class="nav-item">
-                <a class="nav-link" href="/signup">Sign Up</a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link" href="/signin">Sign In</a>
               </li>
             <% } else {%>
+              <li class="nav-item">
+                <a class="nav-link" href="/signup">Sign Up</a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="/signout">Sign Out</a>
               </li>
