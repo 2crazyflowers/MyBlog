@@ -9,26 +9,26 @@ var express         = require("express"),
     PORT            = 3000,
     app             = express();
 
-    var posts = [
-        {
-            postTitle: "Test Title 1",
-            postSubTitle: "This is a subtitle",
-            postLink: "https://www.linkedin.com/in/sara-bracewell-3b952761/",
-            postDate: "July 2, 2018"
-        },
-        {
-            postTitle: "Test Title 2",
-            postSubTitle: "This is a subtitle",
-            postLink: "https://www.linkedin.com/in/sara-bracewell-3b952761/",
-            postDate: "July 14, 2018"
-        },
-        {
-            postTitle: "Test Title 3",
-            postSubTitle: "This is a subtitle",
-            postLink: "https://www.linkedin.com/in/sara-bracewell-3b952761/",
-            postDate: "July 2, 2018"
-        }
-    ]
+    // var posts = [
+    //     {
+    //         postTitle: "Test Title 1",
+    //         postSubTitle: "This is a subtitle",
+    //         postLink: "https://www.linkedin.com/in/sara-bracewell-3b952761/",
+    //         postDate: "July 2, 2018"
+    //     },
+    //     {
+    //         postTitle: "Test Title 2",
+    //         postSubTitle: "This is a subtitle",
+    //         postLink: "https://www.linkedin.com/in/sara-bracewell-3b952761/",
+    //         postDate: "July 14, 2018"
+    //     },
+    //     {
+    //         postTitle: "Test Title 3",
+    //         postSubTitle: "This is a subtitle",
+    //         postLink: "https://www.linkedin.com/in/sara-bracewell-3b952761/",
+    //         postDate: "July 2, 2018"
+    //     }
+    // ]
 
 
 //App Configuration
@@ -120,7 +120,14 @@ app.use(function(req, res, next){
 
 // route home page to render the home.ejs file
 app.get("/", function (req, res) {
-    res.render('home', {posts:posts});
+    Blog.find({}, function(err, posts){
+        if(err) {
+            console.log("there is an error finding blogs from database: ", err);
+        } else {
+            console.log(posts);
+            res.render('home', {posts:posts});
+        }
+    })
 });
 
 //route for about page
@@ -213,9 +220,9 @@ app.post("/addnewblog", function (req, res){
     }
 
     Blog.create(newBlog)
-    .then(function(addedNewBlog){
-        console.log("New blog added: " + addedNewBlog);
-        res.status(201).json(addedNewBlog);
+    .then(function(newBlog){
+        console.log("New blog added: " + newBlog);
+        res.status(201).json(newBlog);
     })
     .catch(function(err) {
         console.log("there is an error sending new blog to database: " + err)
