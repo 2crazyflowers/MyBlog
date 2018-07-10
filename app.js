@@ -110,6 +110,13 @@ passport.deserializeUser(function(id, done) {
 
 
 // Below are HTTP methods. Routes for webpages, getting the static files
+
+// Share current user with routes
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+});
+
 // route home page to render the home.ejs file
 app.get("/", function (req, res) {
     res.render('home', {posts:posts});
@@ -134,7 +141,14 @@ app.post("/signin", passport.authenticate("local",
     {
     successRedirect: "/",
     failureRedirect: "/signin"
-    }), function(req, res){ });
+    }), function(req, res){ 
+});
+
+//route for signout page
+app.get("/signout", function (req, res) {
+    req.logOut();
+    res.redirect("/");
+});
 
 //route for signup page
 app.get("/signup", function (req, res) {
