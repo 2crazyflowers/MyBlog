@@ -159,11 +159,11 @@ app.get("/signout", function (req, res) {
 });
 
 //route for signup page
-app.get("/signup", function (req, res) {
+app.get("/signup", isLoggedIn, function (req, res) {
     res.render('signUp');
 });
 
-app.post("/signup", function (req, res) {
+app.post("/signup", isLoggedIn, function (req, res) {
     //console.log(req.body) - add name to input in form for user/password
     console.log('Current username: ' + req.body.username);
     console.log('Current password: ' + req.body.password);
@@ -201,11 +201,11 @@ app.post("/signup", function (req, res) {
 });
 
 //route for add new blog page
-app.get("/addnewblog", function (req, res) {
+app.get("/addnewblog", isLoggedIn, function (req, res) {
     res.render('addNewBlog');
 });
 
-app.post("/addnewblog", function (req, res){
+app.post("/addnewblog", isLoggedIn, function (req, res){
     // console.log(req.body.data);
     var title = req.body.data.blogTitle;
     var subTitle = req.body.data.blogSubTitle;
@@ -244,10 +244,12 @@ app.get("/blogs/:blogId", function (req, res) {
     })
 });
 
-// app.post("/blogs/:blogId", function (req, res) {
-//     console.log(req.params.blogId);
-//     res.send('We will show you the blog in a minute');
-// });
+function isLoggedIn(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/signin');
+};
 
 
 // Start the server and give error if it is not working

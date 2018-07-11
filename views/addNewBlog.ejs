@@ -22,15 +22,15 @@
             $.post("addnewblog", {data: data})
             .then(function(addedNewBlog){
                 console.log("Post from addNewBlog.ejs: " + addedNewBlog);
+                $("#bTitle").val("");
+                $("#bSubTitle").val("");
+                $("#bImage").val("");
+                $("#bBlog").val("");
+                CKEDITOR.instances.bBlog.setData("");
             }) 
             .catch(function(err) {
                 res.json("there is an error posting the new blog" + err);
             });
-
-            // $("#bTitle").val("");
-            // $("#bSubTitle").val("");
-            // $("#bImage").val("");
-            // $("#bBlog").val("");
         });
     });
 </script>
@@ -56,8 +56,8 @@
             <label for="bBlog">Blog Text</label>
             <textarea rows="3" class="form-control" id="bBlog" placeholder="Enter Blog Text" name="blog"></textarea>   
         </div>
-        <button type="submit" class="btn btn-primary" id="submit">Submit</button>
     </form>
+    <button type="submit" class="btn btn-primary" id="submit">Submit</button>
     
 </div>
 
