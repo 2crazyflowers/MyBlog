@@ -23,9 +23,12 @@
 
       
       <div class="row">
+        <div class="col-lg-3 mx-auto">
+          <img class="img-thumbnail" src="<%= post.comImage %>" alt="<%= post.title %>">
+        </div>
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="post-preview">
-            <a href="post.html">
+            <a href="/blogs/<%= post._id %>">
               <h2 class="post-title">
                 <%= post.title %>
               </h2>
@@ -38,8 +41,6 @@
               on <%= post.date %> </p>
           </div>
           <hr>
-
-
         </div>
       </div>
       

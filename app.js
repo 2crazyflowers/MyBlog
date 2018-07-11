@@ -47,7 +47,7 @@ mongoose.connect("mongodb://localhost:27017/MyBlogApp")
 // View engine which will handle the front end side, which is ejs
 app.set('view engine', 'ejs'); 
 // Use express.static to serve the public folder as a static directory
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 // Use body-parser for handling form submissions, helps get data (from user- add new blog) from request 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -228,6 +228,26 @@ app.post("/addnewblog", function (req, res){
         console.log("there is an error sending new blog to database: " + err)
     })
 });
+
+//route for each blog
+app.get("/blogs/:blogId", function (req, res) {
+    console.log(req.params.blogId);
+    // res.send('We will show you the blog in a minute');
+
+    Blog.findById(req.params.blogId)
+    .then(function(foundBlog){
+        res.render("blog", {foundBlog: foundBlog})
+    })
+    .catch(function(err) {
+        console.log('there is an error with posting this blog page: ', err);
+        res.send(err);
+    })
+});
+
+// app.post("/blogs/:blogId", function (req, res) {
+//     console.log(req.params.blogId);
+//     res.send('We will show you the blog in a minute');
+// });
 
 
 // Start the server and give error if it is not working

@@ -26,13 +26,12 @@
             .catch(function(err) {
                 res.json("there is an error posting the new blog" + err);
             });
+
+            // $("#bTitle").val("");
+            // $("#bSubTitle").val("");
+            // $("#bImage").val("");
+            // $("#bBlog").val("");
         });
-
-        $("#bTitle").empty();
-        $("#bSubTitle").empty();
-        $("#bImage").empty();
-        $("#bBlog").empty();
-
     });
 </script>
 
@@ -57,9 +56,9 @@
             <label for="bBlog">Blog Text</label>
             <textarea rows="3" class="form-control" id="bBlog" placeholder="Enter Blog Text" name="blog"></textarea>   
         </div>
-        
+        <button type="submit" class="btn btn-primary" id="submit">Submit</button>
     </form>
-    <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+    
 </div>
 
 <script src="https://cdn.ckeditor.com/4.10.0/standard/ckeditor.js"></script>
