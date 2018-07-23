@@ -1,5 +1,25 @@
 <% include ./partials/header %>
 
+<script>
+    $(document).ready(function(){
+        $("#delete").on("click", function(event) {
+            alert('the delete button was clicked');
+
+            $.delete("/blogs/:blogId")
+            .then(function(blogDeleted){
+              console.log("Blog was deleted: ", blogDeleted);
+            })
+            .catch(function(err){
+              console.log("there was an error deleting this post: ", err);
+            });
+        });
+
+        $("#edit").on("click", function(event){
+          alert('the edit button was clicked');
+        });
+    });
+</script>
+
     <!-- Page Header -->
     <header class="masthead" style="background-image: url('https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e521f1ad359392508e578117b584f891&auto=format&fit=crop&w=1950&q=80')">
       <div class="overlay"></div>
@@ -26,7 +46,7 @@
         <div class="col-lg-3 mx-auto">
           <img class="img-thumbnail" src="<%= post.comImage %>" alt="<%= post.title %>">
         </div>
-        <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="col-lg-7 mx-auto">
           <div class="post-preview">
             <a href="/blogs/<%= post._id %>">
               <h2 class="post-title">
@@ -40,9 +60,18 @@
               <a href="<%= post.postLink %>" target="_blank"> Sara Bracewell</a>
               on <%= post.date %> </p>
           </div>
-          <hr>
         </div>
+
+        <%if (currentUser) { %>
+        <div class="col-lg-2 mx-auto">
+          <button type="submit" class="btn btn-primary mb-3 mt-3" style="padding:15px 12px;" id="delete">Delete</button>
+          <a type="submit" class="btn btn-secondary" id="edit" href="/blogs/<%=post._id%>/edit">Edit</a>
+        </div>
+        <% } %>
+
       </div>
+
+      <hr>
       
       <% }) %>
       

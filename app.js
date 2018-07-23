@@ -229,7 +229,7 @@ app.post("/addnewblog", isLoggedIn, function (req, res){
     })
 });
 
-//route for each blog
+// route for each blog
 app.get("/blogs/:blogId", function (req, res) {
     console.log(req.params.blogId);
     // res.send('We will show you the blog in a minute');
@@ -241,6 +241,29 @@ app.get("/blogs/:blogId", function (req, res) {
     .catch(function(err) {
         console.log('there is an error with posting this blog page: ', err);
         res.send(err);
+    })
+});
+
+//route for deleting blogs
+app.delete("/blogs/:blogId", isLoggedIn, function (req, res) {
+    console.log(req.params.blogId);
+    // res.send('We will show you the blog in a minute');
+
+    Blog.findById(req.params.blogId)
+    .then(function(foundBlog){
+        console.log('this is the blog chosen to be deleted: ', foundBlog);
+        //res.render("blog", {foundBlog: foundBlog})
+    })
+    .catch(function(err) {
+        console.log('there is an error with posting this blog page: ', err);
+        res.send(err);
+    })
+});
+
+app.get ("/blogs/:blogId/edit", function(req, res) {
+    Blog.findById(req.params.blogId, function(err, foundBlog) {
+        if(err) throw err;
+        res.render("updateBlog", {foundBlog: foundBlog});
     })
 });
 
