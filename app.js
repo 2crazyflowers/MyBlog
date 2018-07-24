@@ -124,7 +124,7 @@ app.get("/", function (req, res) {
         if(err) {
             console.log("there is an error finding blogs from database: ", err);
         } else {
-            console.log(posts);
+           // console.log(posts);
             res.render('home', {posts:posts});
         }
     })
@@ -231,7 +231,7 @@ app.post("/addnewblog", isLoggedIn, function (req, res){
 
 // route for each blog
 app.get("/blogs/:blogId", function (req, res) {
-    console.log(req.params.blogId);
+    // console.log(req.params.blogId);
     // res.send('We will show you the blog in a minute');
 
     Blog.findById(req.params.blogId)
@@ -266,6 +266,20 @@ app.get ("/blogs/:blogId/edit", function(req, res) {
         res.render("updateBlog", {foundBlog: foundBlog});
     })
 });
+
+app.put ("/blogs/:blogId", function(req, res) {
+    console.log('===========================');
+    console.log('===========================');
+    console.log('===========================');
+    console.log('You are updating blog information: ',  req.body);
+    Blog.findByIdAndUpdate(req.param.blogId, req.body, function(err, data){
+        if(err) {
+            console.log('There is an error updating this blog: ', err);
+            res.render("updateBlog", {data:data});
+        }
+    });
+
+})
 
 function isLoggedIn(req, res, next) {
     if(req.isAuthenticated()) {
