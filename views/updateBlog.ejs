@@ -1,44 +1,10 @@
 <% include ./partials/header %>
 
-<script>
-    $(document).ready(function(){
-        $("#submit").on("click", function(event) {
-            event.preventDefault();
-            alert('the submit button was clicked');
-            
-            var title = $("#bTitle").val();
-            var subTitle = $("#bSubTitle").val();
-            var comImage = $("#bImage").val();
-            var blog = CKEDITOR.instances.bBlog.getData();
-            
-            console.log('Here is the updated blog: ', title + " " + subTitle + " " + " " + comImage + " " + blog);
-
-            var data = {
-                title: title,
-                subTitle: subTitle,
-                comImage: comImage,
-                blog: blog
-            }
-            console.log('here is the updated data: ', data);
-
-
-            $.ajax({
-                URL: '/blogs/<%=foundBlog._id%>',
-                type: 'PUT',
-                data: data
-            });
-            //event.preventDefault();
-            window.location='/blogs/<%=foundBlog._id%>';
-
-        });
-    });
-</script>
-
 
 <div class="container" style="margin-top: 100px;">
 
     <form>
-        <h1 style="text-align: center;">Add New Blog</h1>
+        <h1 style="text-align: center;">Update Blog</h1>
         <div class="form-group">
             <label for="bTitle">Blog Title</label>
             <input class="form-control" id="bTitle" placeholder="Enter Title" name="title" value="<%=foundBlog.title%>">
@@ -62,9 +28,64 @@
     
 </div>
 
+
 <script src="https://cdn.ckeditor.com/4.10.0/standard/ckeditor.js"></script>
 <script>
     CKEDITOR.replace( 'blog' );
+</script>
+<script>
+    $(document).ready(function(){
+        $("#submit").on("click", function(event) {
+            //event.preventDefault();
+            //this worked
+            //alert('the submit button was clicked');
+            
+            var title = $("#bTitle").val();
+            var subTitle = $("#bSubTitle").val();
+            var comImage = $("#bImage").val();
+            var blog = CKEDITOR.instances.bBlog.getData();
+            
+            //these are being consoled out but getting this error: VM35079:1 PUT http://localhost:3000/blogs/5b57b5f2745c9f5860a9c0b1/edit 404 (Not Found)
+            //console.log('Here is the updated blog: ', title + " " + subTitle + " " + " " + comImage + " " + blog);
+            var idOfBlog = "<%=foundBlog._id%>";
+            console.log("this is the id of the blog that you are editing: ", idOfBlog);
+            var URL = "/blogs/"+idOfBlog;
+            console.log("this is the url we are trying to hit: ", URL);
+            //url from this page and app.js get match
+            //  /blogs/5b60d1852ac00253805f10a4
+            //  /blogs/5b60d1852ac00253805f10a4
+            var data = {
+                title: title,
+                subTitle: subTitle,
+                comImage: comImage,
+                blog: blog
+            }
+            console.log('+++++++++ here is the updated data: ', data);
+
+            //run a put request to update the blog information
+            $.ajax({
+                URL: URL,
+                method:"PUT",
+                data:data
+            })
+            .fail(function() {
+                alert( "error: ", err );
+            })
+            .then(function(data) {
+                //window.reload;
+                window.location="/";
+                console.log("OOOOOOOOOOOOOOOOOOOOOO");
+            })
+
+            //this is catching my error on why put is not working which is 404 put not found
+            .catch(function (err) {
+                console.log('there is an error updating this blog: ', err);
+            });
+            // event.preventDefault();
+            //window.location='/';
+
+        });
+    });
 </script>
 
 

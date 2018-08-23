@@ -86,7 +86,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 // passport.deserializeUser(User.deserializeUser());
 
 // below is from documentation
-//this resolved issue with user not going to database
+//this resolved issue (above) with user not going to database
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
@@ -124,7 +124,7 @@ app.get("/", function (req, res) {
         if(err) {
             console.log("there is an error finding blogs from database: ", err);
         } else {
-           // console.log(posts);
+        // console.log(posts);
             res.render('home', {posts:posts});
         }
     })
@@ -230,7 +230,7 @@ app.post("/addnewblog", isLoggedIn, function (req, res){
 });
 
 // route for each blog
-app.get("/blogs/:blogId", function (req, res) {
+app.get("/blogs/:blogId", isLoggedIn, function (req, res) {
     // console.log(req.params.blogId);
     // res.send('We will show you the blog in a minute');
 
@@ -245,44 +245,98 @@ app.get("/blogs/:blogId", function (req, res) {
 });
 
 //route for deleting blogs
-app.delete("/blogs/:blogId", isLoggedIn, function (req, res) {
-    console.log(req.params.blogId);
-    // res.send('We will show you the blog in a minute');
+// app.delete("/blogs/:blogId", isLoggedIn, function (req, res) {
+//     console.log(req.params.blogId);
+//     // res.send('We will show you the blog in a minute');
 
+//     Blog.findByIdAndRemove(req.params.blogId)
+//     .then(function(foundBlog){
+//         console.log('this is the blog chosen to be deleted: ', foundBlog);
+//         //res.render("blog", {foundBlog: foundBlog})
+//     })
+//     .catch(function(err) {
+//         console.log('there is an error with deleting this blog page: ', err);
+//         res.send(err);
+//     })
+// });
+
+app.get("/deleteblog/:blogId", isLoggedIn, function(req, res){
     Blog.findById(req.params.blogId)
     .then(function(foundBlog){
-        console.log('this is the blog chosen to be deleted: ', foundBlog);
-        //res.render("blog", {foundBlog: foundBlog})
+        res.render("blog", {foundBlog: foundBlog})
     })
     .catch(function(err) {
         console.log('there is an error with posting this blog page: ', err);
         res.send(err);
-    })
+    });
 });
 
-app.get ("/blogs/:blogId/edit", function(req, res) {
+//ttried this url but it couldn't GET: /deleteblog/:blogId
+//deleting blogs is not working
+app.delete("/deleteblog/:blogId", isLoggedIn, function(req, res){
+    console.log('deleting with this id: ', req.params.blogId)
+    Blog.findByIdAndRemove(req.params.blogId, function(err){
+        console.log("this is the blog you are trying to delete: ", req.params.blogId, req.body);
+        
+        if(err){
+            console.log('there was an error in trying to delete the blog: ' + err);
+            //res.redirect("/");
+        } else {
+            console.log('you have deleted this blog: '+ req.body);
+            //res.redirect("/");
+        }
+    });
+});
+
+//this is working and sending you to foundblog for editing
+app.get ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
     Blog.findById(req.params.blogId, function(err, foundBlog) {
-        if(err) throw err;
+        console.log('url for put should be: /blogs/',req.params.blogId);
+        console.log('foundblog for editing: ', foundBlog);
+        if(err) {
+            console.log("there is an error getting the id of the post you are trying to blog: ", err);
+        };
+        //sends the blog requested for editing to updateBlog page for editing
         res.render("updateBlog", {foundBlog: foundBlog});
-    })
+    });
 });
+//route for editing a blog and saving it
+app.put ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
+    //these console logs are not even logging out!!
+    console.log('===========================');
+    console.log('===========================');
+    console.log('===========================');
+    console.log('This is the blog you are trying to update/edit, from app.put: ',  req.body);
+    // this has been added to see if jquery put will work instead of an ajax call
+    //these variables were not here before, 
+    //beginning to think error is that I am not 
+    //giving the backend the proper information to send
+    var title = req.body.blogTitle;
+    var subTitle = req.body.blogSubTitle;
+    var comImage = req.body.blogComImage;
+    var blog = req.body.blogText;
 
-app.put ("/blogs/:blogId", function(req, res) {
-    console.log('===========================');
-    console.log('===========================');
-    console.log('===========================');
-    console.log('You are updating blog information: ',  req.body);
-    Blog.findByIdAndUpdate(req.param.blogId, req.body, function(err, data){
+    var updatedBlog = {
+        title: title, 
+        subTitle: subTitle, 
+        comImage: comImage,
+        blog: blog
+    }
+    //updated to params from param ===see if that is what was going wrong
+    Blog.findByIdAndUpdate(req.params.blogId, req.body, function(err, updatedBlog){
+        console.log('================== Here is your updated blog: ', updatedBlog);
         if(err) {
             console.log('There is an error updating this blog: ', err);
             res.render("updateBlog", {data:data});
         }
     });
-
-})
+});
 
 function isLoggedIn(req, res, next) {
+    //console.log('You think you are logged in, but are you?');
+    
     if(req.isAuthenticated()) {
+        console.log('You are still logged in');
         return next();
     }
     res.redirect('/signin');
