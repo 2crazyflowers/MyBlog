@@ -17,9 +17,6 @@
     <!-- Custom styles for this template -->
     <link href="/css/main.css" rel="stylesheet">
 
-    <!--AJAX jQuery script needed
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
-
   </head>
 
   <body>
@@ -111,8 +108,8 @@
         <%if (currentUser) { %>
         <div class="col-lg-2 mx-auto">
         <!--can add data method to delete button though this is an additional npm package to do this or use rails/angular data-method="delete"-->
-          <button class="btn btn-primary mb-3 mt-3" style="padding:15px 12px;" id="delete" >Delete</button>
-          <!--<form action="/blogs/<%=post._id%>?_method=DELETE" method="DELETE">
+          <button id="delete" class="btn btn-primary mb-3 mt-3" style="padding:15px 12px;"  type="button" data-id="<%=post._id%>">Delete</button>
+          <!--<form action="/blogs/<%=post._id%>" method="DELETE">
             <button style="margin-top:20px;" class="btn btn-primary mb-3 mt-3" style="padding:15px 12px;" id="delete">Delete Blog</button>
           </form>-->
           <!--<a type="submit" class="btn btn-primary mb-3 mt-3" id="delete" href="/deleteblogs/<%=post._id%>">Delete</a>-->
@@ -172,44 +169,45 @@
     </div>
   </footer>
   
-  <!-- Bootstrap JavaScript jquery was removed as the one suggested does not have ajax-->
 
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
-  
+    
   <!-- Custom scripts for this template -->
   <!-- <script src="js/clean-blog.js"></script> -->
-  
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- Bootstrap JavaScript jquery was removed as the one suggested does not have ajax-->
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
+  //this does NOTHING! WHY?!!!
     $(document).ready(function(){
+      //delete button not working correctly
+      //on click not noticed
       $("#delete").on("click", function(event) {
         
         alert('the delete button was clicked');
         console.log('the delete button was clicked');
         
-        $.ajax({
-          url:"/deleteblog/:blogId",
-          type:"DELETE",
-          blogDeleted: blogDeleted
-        })
-        .fail(function() {
-          alert( "error: ", err );
-        })
-        .catch(function(err){
-          console.log('delete is not working: ', err);
-        })
-        .then(function(blogDeleted){
-          console.log("Blog was deleted: ", blogDeleted);
-        });
+        // $.ajax({
+        //   url:"/blogs/:blogId",
+        //   method:"DELETE",
+        //   blogDeleted: blogDeleted
+        // })
+        // .fail(function() {
+        //   alert( "error: ", err );
+        // })
+        // .catch(function(err){
+        //   console.log('delete is not working: ', err);
+        // })
+        // .then(function(blogDeleted){
+        //   console.log("Blog was deleted: ", blogDeleted);
+        // });
       });
 
-      $("#edit").on("click", function(event){
-        // alert('the edit button was clicked');
-        //the user is then taken to the updateBlog page and allowed to edit the blog
-      });
+      // $("#edit").on("click", function(event){
+      //   // alert('the edit button was clicked');
+      //   //the user is then taken to the updateBlog page and allowed to edit the blog
+      //   //using the link from a href
+      // });
     });
   </script>
 

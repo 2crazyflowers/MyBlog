@@ -271,7 +271,6 @@ app.get("/deleteblog/:blogId", isLoggedIn, function(req, res){
     });
 });
 
-//ttried this url but it couldn't GET: /deleteblog/:blogId
 //deleting blogs is not working
 app.delete("/deleteblog/:blogId", isLoggedIn, function(req, res){
     console.log('deleting with this id: ', req.params.blogId)
@@ -303,10 +302,7 @@ app.get ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
 //route for editing a blog and saving it
 app.put ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
     //these console logs are not even logging out!!
-    console.log('===========================');
-    console.log('===========================');
-    console.log('===========================');
-    console.log('This is the blog you are trying to update/edit, from app.put: ',  req.body);
+    console.log('This is the blog you are editing, from app.put: ',  req.body);
     // this has been added to see if jquery put will work instead of an ajax call
     //these variables were not here before, 
     //beginning to think error is that I am not 
@@ -324,10 +320,13 @@ app.put ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
     }
     //updated to params from param ===see if that is what was going wrong
     Blog.findByIdAndUpdate(req.params.blogId, req.body, function(err, updatedBlog){
-        console.log('================== Here is your updated blog: ', updatedBlog);
+        console.log('==================This is your edited blog: ', updatedBlog);
         if(err) {
             console.log('There is an error updating this blog: ', err);
             res.render("updateBlog", {data:data});
+        }
+        else {
+            res.redirect("/");
         }
     });
 });

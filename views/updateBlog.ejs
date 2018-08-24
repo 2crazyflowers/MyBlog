@@ -33,6 +33,8 @@
 <script>
     CKEDITOR.replace( 'blog' );
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <script>
     $(document).ready(function(){
         $("#submit").on("click", function(event) {
@@ -68,9 +70,6 @@
                 method:"PUT",
                 data:data
             })
-            .fail(function() {
-                alert( "error: ", err );
-            })
             .then(function(data) {
                 //window.reload;
                 window.location="/";
@@ -82,7 +81,7 @@
                 console.log('there is an error updating this blog: ', err);
             });
             // event.preventDefault();
-            //window.location='/';
+            window.location='/';
 
         });
     });
