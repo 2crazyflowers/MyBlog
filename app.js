@@ -245,34 +245,37 @@ app.get("/blogs/:blogId", isLoggedIn, function (req, res) {
 });
 
 //route for deleting blogs
-// app.delete("/blogs/:blogId", isLoggedIn, function (req, res) {
-//     console.log(req.params.blogId);
-//     // res.send('We will show you the blog in a minute');
+app.delete("/blogs/:blogId", isLoggedIn, function (req, res) {
+    //we are not catching the blogId so we cannot delete it 
+    //until we can figure out how to get it.
+    console.log("the id of the blog you are trying to delete is: ", req.params.blogId);
+    // res.send('We will show you the blog in a minute');
 
-//     Blog.findByIdAndRemove(req.params.blogId)
-//     .then(function(foundBlog){
-//         console.log('this is the blog chosen to be deleted: ', foundBlog);
-//         //res.render("blog", {foundBlog: foundBlog})
-//     })
-//     .catch(function(err) {
-//         console.log('there is an error with deleting this blog page: ', err);
-//         res.send(err);
-//     })
-// });
-
-app.get("/deleteblog/:blogId", isLoggedIn, function(req, res){
-    Blog.findById(req.params.blogId)
+    Blog.findByIdAndRemove(req.params.blogId)
     .then(function(foundBlog){
-        res.render("blog", {foundBlog: foundBlog})
+        console.log('this is the blog chosen to be deleted: ', foundBlog);
+        //res.render("blog", {foundBlog: foundBlog})
+        res.redirect("/");
     })
     .catch(function(err) {
-        console.log('there is an error with posting this blog page: ', err);
+        console.log('there is an error with deleting this blog page: ', err);
         res.send(err);
-    });
+    })
 });
 
+// app.get("/deleteblog/:blogId", isLoggedIn, function(req, res){
+//     Blog.findById(req.params.blogId)
+//     .then(function(foundBlog){
+//         res.render("blog", {foundBlog: foundBlog})
+//     })
+//     .catch(function(err) {
+//         console.log('there is an error with posting this blog page: ', err);
+//         res.send(err);
+//     });
+// });
+
 //deleting blogs is not working
-app.delete("/deleteblog/:blogId", isLoggedIn, function(req, res){
+app.delete("/blogs/:blogId", isLoggedIn, function(req, res){
     console.log('deleting with this id: ', req.params.blogId)
     Blog.findByIdAndRemove(req.params.blogId, function(err){
         console.log("this is the blog you are trying to delete: ", req.params.blogId, req.body);
@@ -299,6 +302,7 @@ app.get ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
         res.render("updateBlog", {foundBlog: foundBlog});
     });
 });
+
 //route for editing a blog and saving it
 app.put ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
     //these console logs are not even logging out!!
@@ -324,9 +328,6 @@ app.put ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
         if(err) {
             console.log('There is an error updating this blog: ', err);
             res.render("updateBlog", {data:data});
-        }
-        else {
-            res.redirect("/");
         }
     });
 });

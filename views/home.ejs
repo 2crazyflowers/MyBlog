@@ -45,8 +45,9 @@
         <%if (currentUser) { %>
         <div class="col-lg-2 mx-auto">
         <!--can add data method to delete button though this is an additional npm package to do this or use rails/angular data-method="delete"-->
+        <!--removed data-id="<%=post._id%>"-->
           <button id="delete" class="btn btn-primary mb-3 mt-3" style="padding:15px 12px;"  type="button" data-id="<%=post._id%>">Delete</button>
-          <!--<form action="/blogs/<%=post._id%>" method="DELETE">
+          <!--<form action="/blogs/<%=post._id%>?_method="GET"" method="DELETE">
             <button style="margin-top:20px;" class="btn btn-primary mb-3 mt-3" style="padding:15px 12px;" id="delete">Delete Blog</button>
           </form>-->
           <!--<a type="submit" class="btn btn-primary mb-3 mt-3" id="delete" href="/deleteblogs/<%=post._id%>">Delete</a>-->
@@ -78,36 +79,28 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
   //this does NOTHING! WHY?!!!
-    $(document).ready(function(){
       //delete button not working correctly
       //on click not noticed
-      $("#delete").on("click", function(event) {
-        
-        alert('the delete button was clicked');
-        console.log('the delete button was clicked');
-        
-        // $.ajax({
-        //   url:"/blogs/:blogId",
-        //   method:"DELETE",
-        //   blogDeleted: blogDeleted
-        // })
-        // .fail(function() {
-        //   alert( "error: ", err );
-        // })
-        // .catch(function(err){
-        //   console.log('delete is not working: ', err);
-        // })
-        // .then(function(blogDeleted){
-        //   console.log("Blog was deleted: ", blogDeleted);
-        // });
+      $("body").on("click", "#delete", function() {
+        var thisId = $(this).attr("data-id");
+        //alert('the delete button was clicked');
+        //console.log('the delete button was clicked on this id: ', blogId);
+        //we are not catching the blog id here to push through to the app.js file
+
+        $.ajax({
+          url:"/blogs/"+thisId,
+          method:"DELETE"
+        })
+        .catch(function(err){
+          console.log('delete is not working: ', err);
+        })
+        .then(function(){
+          console.log("Blog was deleted with this id: "+ thisId);
+          //window.reload;
+          window.location="/";
+        });
       });
 
-      // $("#edit").on("click", function(event){
-      //   // alert('the edit button was clicked');
-      //   //the user is then taken to the updateBlog page and allowed to edit the blog
-      //   //using the link from a href
-      // });
-    });
   </script>
 
   <% include ./partials/footer %>
