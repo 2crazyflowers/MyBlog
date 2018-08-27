@@ -60,30 +60,9 @@ app.use(require("express-session")({
     saveUninitalized: false
 }));
 
-// catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//     var err = new Error('Not Found');
-//     err.status = 404;
-//     next(err);
-// });
-
-// // error handler
-// app.use(function(err, req, res, next) {
-//     // set locals, only providing error in development
-//     res.locals.message = err.message;
-//     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//     // render the error page
-//     res.status(err.status || 500);
-//     res.render('error');
-// });
-
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
-// below code not working:
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
 
 // below is from documentation
 //this resolved issue (above) with user not going to database
@@ -96,19 +75,6 @@ passport.deserializeUser(function(id, done) {
         done(err, user);
     });
 });
-
-//from documentation - did not resolve errors
-// passport.use(new LocalStrategy(
-//     function(username, password, done) {
-//       User.findOne({ username: username }, function (err, user) {
-//         if (err) { return done(err); }
-//         if (!user) { return done(null, false); }
-//         if (!user.verifyPassword(password)) { return done(null, false); }
-//         return done(null, user);
-//       });
-//     }
-//   ));
-
 
 // Below are HTTP methods. Routes for webpages, getting the static files
 
@@ -230,7 +196,10 @@ app.post("/addnewblog", isLoggedIn, function (req, res){
 });
 
 // route for each blog
-app.get("/blogs/:blogId", isLoggedIn, function (req, res) {
+// this route is used by admin and normal user
+// so do not want to need them to sign in and 
+// have it be a protected route
+app.get("/blogs/:blogId", function (req, res) {
     // console.log(req.params.blogId);
     // res.send('We will show you the blog in a minute');
 
@@ -246,8 +215,6 @@ app.get("/blogs/:blogId", isLoggedIn, function (req, res) {
 
 //route for deleting blogs
 app.delete("/blogs/:blogId", isLoggedIn, function (req, res) {
-    //we are not catching the blogId so we cannot delete it 
-    //until we can figure out how to get it.
     console.log("the id of the blog you are trying to delete is: ", req.params.blogId);
     // res.send('We will show you the blog in a minute');
 
@@ -263,34 +230,7 @@ app.delete("/blogs/:blogId", isLoggedIn, function (req, res) {
     })
 });
 
-// app.get("/deleteblog/:blogId", isLoggedIn, function(req, res){
-//     Blog.findById(req.params.blogId)
-//     .then(function(foundBlog){
-//         res.render("blog", {foundBlog: foundBlog})
-//     })
-//     .catch(function(err) {
-//         console.log('there is an error with posting this blog page: ', err);
-//         res.send(err);
-//     });
-// });
-
-//deleting blogs is not working
-app.delete("/blogs/:blogId", isLoggedIn, function(req, res){
-    console.log('deleting with this id: ', req.params.blogId)
-    Blog.findByIdAndRemove(req.params.blogId, function(err){
-        console.log("this is the blog you are trying to delete: ", req.params.blogId, req.body);
-        
-        if(err){
-            console.log('there was an error in trying to delete the blog: ' + err);
-            //res.redirect("/");
-        } else {
-            console.log('you have deleted this blog: '+ req.body);
-            //res.redirect("/");
-        }
-    });
-});
-
-//this is working and sending you to foundblog for editing
+//this is sending you to foundblog for editing
 app.get ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
     Blog.findById(req.params.blogId, function(err, foundBlog) {
         console.log('url for put should be: /blogs/',req.params.blogId);
@@ -305,7 +245,6 @@ app.get ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
 
 //route for editing a blog and saving it
 app.put ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
-    //these console logs are not even logging out!!
     console.log('This is the blog you are editing, from app.put: ',  req.body);
     // this has been added to see if jquery put will work instead of an ajax call
     //these variables were not here before, 
@@ -334,7 +273,6 @@ app.put ("/blogs/:blogId/edit", isLoggedIn, function(req, res) {
 
 function isLoggedIn(req, res, next) {
     //console.log('You think you are logged in, but are you?');
-    
     if(req.isAuthenticated()) {
         console.log('You are still logged in');
         return next();
