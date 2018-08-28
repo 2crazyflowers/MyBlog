@@ -8,7 +8,7 @@ var express         = require("express"),
     bodyParser      = require("body-parser"),
     PORT            = process.env.PORT || 3000,
     app             = express();
-
+    require("dotenv").config();
 //Testing used to initialize app without mongodb
     // var posts = [
     //     {
@@ -42,7 +42,7 @@ mongoose.Promise = Promise;
 // this connection tells what port to use for data base and
 // what database to use, if it does not exist, create a MyBlogApp database
 // if connection made, console log, else catch the specific error
-//mongodb://heroku_7txjdmwn:flowers4me@ds149353.mlab.com:49353/heroku_7txjdmwn
+
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/MyBlogApp";
 
