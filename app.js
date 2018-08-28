@@ -37,17 +37,20 @@ var siteRoutes      = require('./routes/siteRoutes.js'),
     adminRoutes      = require('./routes/adminRoutes.js');
 
 //App Configuration
+//Connect to the Mongo DB
 mongoose.Promise = Promise;
 // this connection tells what port to use for data base and
 // what database to use, if it does not exist, create a MyBlogApp database
 // if connection made, console log, else catch the specific error
-mongoose.connect("mongodb://localhost:27017/MyBlogApp")
-    .then(() => {
-        console.log('The database connected')
-    })
-    .catch((err)=> {
-        console.log('Something went awry', err);
-    });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/MyBlogApp";
+
+mongoose.connect(MONGODB_URI)
+.then(() => {
+    console.log('The database connected')
+})
+.catch((err)=> {
+    console.log('Something went awry', err);
+});
 
 // View engine which will handle the front end side, which is ejs
 app.set('view engine', 'ejs'); 
