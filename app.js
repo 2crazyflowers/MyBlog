@@ -9,6 +9,7 @@ var express         = require("express"),
     PORT            = 3000,
     app             = express();
 
+//Testing used to initialize app without mongodb
     // var posts = [
     //     {
     //         postTitle: "Test Title 1",
@@ -69,7 +70,6 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
 // below is from documentation
-//this resolved issue (above) with user not going to database
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });

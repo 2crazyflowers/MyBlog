@@ -1,13 +1,22 @@
 # My Travel Blog
 
-
 ### Overview
 
 This is a simple blog application that allows general users to view a summary of my travel blogs on the home page and click on a blog summary to access the full blog. 
 
-An administrator can sign in to the application and gain access to add a new blog, edit a current blog, delete a blog or create a new administrator.
+An administrator can sign in to the application 
+![Image of Sign In Page](./public/images/readme_images/signin.PNG)
+
+and gain access to add a new blog,
+![Image of App in Browser](./public/images/readme_images/home.PNG)
+
+edit a current blog, delete a blog
+![Image of Add a Blog Page](./public/images/readme_images/addablog.PNG)
+or create a new administrator. The login is done with Passport, Passport-Local and Express-Session.
 
 The blog and user information is saved in MongoDB. The images are url addresses from UnSplash.com.
+
+I have used ejs, which is a simple templating language that lets you generate HTML markup with plain JavaScript. This makes the code dryer (less repetative code) as you can have a header and footer file as welll as repeat code for each blog entry. I found it easier to use than handlebars.js.
 
 ![Image of App in Browser](./public/images/readme_images/home.PNG)
 	
@@ -23,8 +32,11 @@ This app require the following software to be installed on your computer:
 * [Node.js](https://nodejs.org/en/)
 
 This app requires the following npm packages to be installed:
-* [Express]()
-* [Mongoose]()
+* [Express](https://www.npmjs.com/package/express)
+* [Mongoose](https://www.npmjs.com/package/mongoose)
+* [Body-Parser](https://www.npmjs.com/package/body-parser)
+* [EJS](https://www.npmjs.com/package/express)
+
 These npm packages are specifically for login authentication:
 * [Passport](https://www.npmjs.com/package/passport)
 * [Passport-Local](https://www.npmjs.com/package/passport-local)
@@ -36,6 +48,7 @@ I would also install nodemon so that anytime you make changes to your app you do
 ## File Structure
 
 ```
+MyBlog
 ├── models
 |  ├── blogModel.js
 |  └── userModel.js
