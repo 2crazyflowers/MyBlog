@@ -6,7 +6,7 @@ var express         = require("express"),
     User            = require("./models/userModel"),
     Blog            = require("./models/blogModel"),
     bodyParser      = require("body-parser"),
-    PORT            = 3000,
+    PORT            = process.env.PORT || 3000,
     app             = express();
 
 //Testing used to initialize app without mongodb
