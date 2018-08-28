@@ -25,11 +25,11 @@ router.get("/signout", function (req, res) {
 });
 
 //route for signup page
-router.get("/signup", function (req, res) {
+router.get("/signup", isLoggedIn, function (req, res) {
     res.render('signUp');
 });
 
-router.post("/signup", function (req, res) {
+router.post("/signup", isLoggedIn, function (req, res) {
     //console.log(req.body) - add name to input in form for user/password
     console.log('Current username: ' + req.body.username);
     console.log('Current password: ' + req.body.password);
