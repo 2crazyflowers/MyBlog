@@ -8,7 +8,7 @@ var express         = require("express"),
     bodyParser      = require("body-parser"),
     PORT            = process.env.PORT || 3000,
     app             = express();
-    require("dotenv").config();
+    // require("dotenv").config();
 //Testing used to initialize app without mongodb
     // var posts = [
     //     {
