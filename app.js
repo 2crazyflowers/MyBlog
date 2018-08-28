@@ -43,7 +43,6 @@ mongoose.Promise = Promise;
 // what database to use, if it does not exist, create a MyBlogApp database
 // if connection made, console log, else catch the specific error
 
-
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/MyBlogApp";
 
 mongoose.connect(MONGODB_URI)
