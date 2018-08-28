@@ -138,6 +138,8 @@ This application is delployed at
 
 I would like to figure out how to store images in MongoDB so that you can use your own images, and not just ones from the internet.
 
+Contact me form is still being worked on.
+
 ## Helpful Links
 * [MongoDB Documentation](https://docs.mongodb.com/manual/)
 * [Mongoose Documentation](http://mongoosejs.com/docs/api.html)
