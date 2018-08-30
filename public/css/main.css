@@ -172,7 +172,7 @@ body {
   }
   
   header.masthead {
-    margin-bottom: 50px;
+    margin-bottom: 25px;
     background: no-repeat center center;
     background-color: #868e96;
     background-attachment: scroll;
@@ -181,6 +181,7 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    height: 475px;
   }
   
   header.masthead .overlay {
@@ -196,7 +197,7 @@ body {
   header.masthead .page-heading,
   header.masthead .post-heading,
   header.masthead .site-heading {
-    padding: 200px 0 150px;
+    padding: 150px 0 150px;
     color: white;
   }
   
@@ -204,7 +205,7 @@ body {
     header.masthead .page-heading,
     header.masthead .post-heading,
     header.masthead .site-heading {
-      padding: 200px 0;
+      padding: 150px 0;
     }
   }
   
